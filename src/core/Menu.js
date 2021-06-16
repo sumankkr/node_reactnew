@@ -22,7 +22,21 @@ const Menu = ({history}) => (
                    <li className="nav-item"> <Link style={isActive(history,"/signin")}  to='/signin' className="nav-link">Signin</Link></li>
         <li className="nav-item"> <Link  style={isActive(history,"/signup")}  to='/signup' className="nav-link">signup</Link></li> 
         </>
-    )} {isAuthenticated() && (
+    )}
+    
+    {isAuthenticated() && isAuthenticated().user.role === "admin" && (
+    <li className="nav-item">
+        <Link
+            to={`/admin`}
+            style={isActive(history, `/admin`)}
+            className="nav-link"
+        >
+            Admin
+        </Link>
+    </li>
+)}
+    
+     {isAuthenticated() && (
         <>
      <li className="nav-item">
                         <Link to={`/findpeople`} style={isActive(history, `/findpeople`)} className="nav-link">
