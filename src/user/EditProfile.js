@@ -45,7 +45,7 @@ import defaultImage from '../images/avatar.png';
     }
   
     isValid = () => {
-      const { name, email, password, fileSize } = this.state;
+      const { name, password, fileSize } = this.state;
       if (fileSize > 1000000) {
         this.setState({
           error: "File size should be less than 100kb",loading: false
@@ -57,13 +57,13 @@ import defaultImage from '../images/avatar.png';
         return false;
       }
       // email@domain.com
-      if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-        this.setState({
-          error: "A valid Email is required",
-          loading: false
-        });
-        return false;
-      }
+      // if (!/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/.test(email)) {
+      //   this.setState({
+      //     error: "A valid Email is required",
+      //     loading: false
+      //   });
+      //   return false;
+      // }
       if (password.length >= 1 && password.length <= 5) {
         this.setState({
           error: "Password must be at least 6 characters long",loading: false
