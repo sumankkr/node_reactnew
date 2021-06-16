@@ -3,6 +3,7 @@ import { singlePost, update } from "./apiPost";
 import { isAuthenticated } from "../auth";
 import { Redirect } from "react-router-dom";
 import DefaultPost from '../images/avatar.png';
+import  {updateUser } from "../user/apiUser";
 
 class EditPost extends Component {
     constructor() {
@@ -67,27 +68,57 @@ class EditPost extends Component {
         this.setState({ [name]: value, fileSize });
     };
 
+    // clickSubmit = event => {
+    //     event.preventDefault();
+    //     this.setState({ loading: true });
+
+    //     if (this.isValid()) {
+    //         const postId = this.props.match.params.postId;
+    //         const token = isAuthenticated().token;
+
+    //         update(postId, token, this.postData).then(data => {
+    //             if (data.error) this.setState({ error: data.error });
+    //             else {
+    //                 this.setState({
+    //                     loading: false,
+    //                     title: "",
+    //                     body: "",
+    //                     redirectToProfile: true
+    //                 });
+    //             }
+    //         });
+    //     }
+    // };
+
+
     clickSubmit = event => {
         event.preventDefault();
         this.setState({ loading: true });
-
+     
         if (this.isValid()) {
-            const postId = this.props.match.params.postId;
+            const userId = this.props.match.params.userId;
             const token = isAuthenticated().token;
-
-            update(postId, token, this.postData).then(data => {
-                if (data.error) this.setState({ error: data.error });
-                else {
+     
+            update(userId, token, this.userData).then(data => {
+                if (data.error) {
+                    this.setState({ error: data.error });
+                    // if admin only redirect
+                } else if (isAuthenticated().user.role === "admin") {
                     this.setState({
-                        loading: false,
-                        title: "",
-                        body: "",
                         redirectToProfile: true
+                    });
+                } else {
+                    // if same user update localstorage and redirect
+                    updateUser(data, () => {
+                        this.setState({
+                            redirectToProfile: true
+                        });
                     });
                 }
             });
         }
     };
+    
 
     editPostForm = (title, body) => (
         <form>
